@@ -34,30 +34,61 @@ switch (userCommand) {
 }
 
 
-// More Spotify Keys and Secrets
-var spotify = new Spotify(keys.spotifyKeys);
+// randonText function to get search query from text file
+function randomText() {
+	// Use file system function to pull data from random.txt
+	fs.readFile("random.txt", "utf8", function(error, data) {
+	// log error to console if applicable
+  if (error) {
+    return console.log(error);
+  }
 
+  // Place data into an array
+  var dataArr = data.split(",");
+
+  extraCommand = dataArr[1];
+
+  var command = dataArr[0];
+
+  switch(command) {
+  	case "my-tweets": 
+  	twitter();
+  	break;
+  	case "spotify-this-song": 
+  	spotify(); 
+  	break;
+  	case "movie-this": 
+  	omdb();
+  	break;
+  	console.log("Not a valid command.");
+  }
+	
+});
+
+}
 
 // Twitter function for my-tweets command
 function twitter() {
 
 	// Accessing Twitter Keys
 	var client = new Twitter(keys.twitterKeys);
-	// Access timeline of username
-	client.get('statuses/user_timeline', 'jacoberling', function(error, tweets, response) {
 
+	// Access timeline of my twitter username
+	client.get('statuses/user_timeline', 'jacoberling', function(error, tweets, response) {
+		// log error to console if applicable
 	  if (error) {
 	  	console.log(error);
 	  } else {
 	  	// Loops through tweets and log to the console
 	  	for(var i = 0; i < tweets.length; i++) {
-	  		console.log('\n' + tweets[i].text + '\n' + tweets[i].created_at); 
+	  		console.log('\n' + 'Tweet: ' + tweets[i].text); 
+	  		console.log('\n' + 'Time: ' + tweets[i].created_at + '\n');
 	  	}
 	  }
 
 	});	
 
-}
+} // END OF TWITTER FUNCTION
 
 // Spotify function for spotify-this-song command
 function spotify() {
@@ -84,11 +115,12 @@ function spotify() {
 	  	console.log('\n Album: ' + result.album.name + '\n');
 
 	  })
+	  // log error to console if applicable
 	  .catch(function(error) {
 	    console.log(error);
 	  });
 
-}
+} // END OF SPOTIFTY FUNCTION 
 
 // OMDB function for movie-this command
 function omdb() {
@@ -127,9 +159,4 @@ function omdb() {
 		})
 	}
 
-}
-
-// Random.txt function for do-what-it-says command
-function randomText() {
-
-}
+} // END OF OMDB FUNCTION
