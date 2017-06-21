@@ -78,7 +78,7 @@ function spotify() {
 	  .then(function(response) {
 	  	var result = response.tracks.items[0];
 	  	// Song Data
-	  	console.log('\n Artist(s): ' + result.artists[0].name);
+	  	console.log('\n Artist: ' + result.artists[0].name);
 	  	console.log('\n Track: ' + result.name);
 	  	console.log('\n Preview: ' + result.preview_url);
 	  	console.log('\n Album: ' + result.album.name + '\n');
@@ -92,6 +92,40 @@ function spotify() {
 
 // OMDB function for movie-this command
 function omdb() {
+	// If user doesn't specify a movie
+	if(!extraCommand){
+		request('http://www.omdbapi.com/?t=Mr.Nobody&y=&plot=short&apikey=40e9cece', function(error, response, body){
+		if(!error && response.statusCode === 200){
+			var movieData = JSON.parse(body);
+			console.log('\n' + 'Title: ' + movieData.Title);
+			console.log('\n' + 'Year: ' + movieData.Year);
+			console.log('\n' + 'Rating: ' + movieData.imdbRating);
+			console.log('\n' + 'Country: ' + movieData.Country);
+			console.log('\n' + 'Language: ' + movieData.Language);
+			console.log('\n' + 'Plot: ' + movieData.Plot);
+			console.log('\n' + 'Actors: ' + movieData.Actors);
+			console.log('\n' + 'Rotten Tomatoes: ' + 'https://www.rottentomatoes.com/search/?search=' + movieData.Title + '\n');
+		}
+	})
+	}
+	// Searches OMDB API for data based on user search
+	else{
+		request('http://www.omdbapi.com/?t=' + extraCommand + '&y=&plot=short&apikey=40e9cece', function(error, response, body){
+			if(!error && response.statusCode === 200){
+				var movieData = JSON.parse(body);
+				console.log('\n' + 'Title: ' + movieData.Title);
+				console.log('\n' + 'Year: ' + movieData.Year);
+				console.log('\n' + 'Rating: ' + movieData.imdbRating);
+				console.log('\n' + 'Country: ' + movieData.Country);
+				console.log('\n' + 'Language: ' + movieData.Language);
+				console.log('\n' + 'Plot: ' + movieData.Plot);
+				console.log('\n' + 'Actors: ' + movieData.Actors);
+				console.log('\n' + 'Rotten Tomatoes: ' + 'https://www.rottentomatoes.com/search/?search=' + movieData.Title + '\n');
+			} if(error) {
+				console.log(error);
+			}
+		})
+	}
 
 }
 
