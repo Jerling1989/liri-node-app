@@ -5,7 +5,7 @@ var Spotify = require('node-spotify-api');
 // Request Package
 var request = require('request');
 // fs Package
-var fs = require("fs");
+var fs = require('fs');
 // Twitter and Spotify Keys
 var keys = require('./keys.js');
 
@@ -61,6 +61,32 @@ function twitter() {
 
 // Spotify function for spotify-this-song command
 function spotify() {
+
+	// Accessing Spotify Keys
+	var spotify = new Spotify(keys.spotifyKeys);
+
+	// If user doesn't specify song
+	if (!extraCommand) {
+		extraCommand = 'The Sign Ace of Base';
+	};
+
+	// Searches Spotify API by user command input
+	spotify.search(
+		{ type: 'track', 
+		query: extraCommand
+		})
+	  .then(function(response) {
+	  	var result = response.tracks.items[0];
+	  	// Song Data
+	  	console.log('\n Artist(s): ' + result.artists[0].name);
+	  	console.log('\n Track: ' + result.name);
+	  	console.log('\n Preview: ' + result.preview_url);
+	  	console.log('\n Album: ' + result.album.name + '\n');
+
+	  })
+	  .catch(function(error) {
+	    console.log(error);
+	  });
 
 }
 
