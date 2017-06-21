@@ -34,7 +34,7 @@ switch (userCommand) {
 }
 
 
-// randonText function to get search query from text file
+// randomText function to get search query from text file
 function randomText() {
 	// Use file system function to pull data from random.txt
 	fs.readFile("random.txt", "utf8", function(error, data) {
